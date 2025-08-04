@@ -33,19 +33,6 @@ jobs:
         run: curl -L https://gotest-release.s3.amazonaws.com/gotest_linux > gotest && chmod +x gotest && sudo mv gotest /usr/bin/gotest
       - name: Setup Harbor server
         run: make setup-harbor
-
-      - name: Hack Code Climate and Go Modules
-        if: github.event_name != 'pull_request'
-        run: mkdir -p github.com/${{ github.repository_owner }} && ln -sf $(pwd) github.com/${{ github.repository }}
-      - name: Test & publish code coverage
-        if: github.event_name != 'pull_request'
-        uses: paambaati/codeclimate-action@v5.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: make integration-test-coverage
-          debug: true
-
       - name: Test
         if: github.event_name == 'pull_request'
         run: make integration-test
