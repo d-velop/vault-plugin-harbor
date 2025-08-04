@@ -7,5 +7,5 @@
 		"type=bind,source=${localEnv:HOME}/.ssh,target=/root/.ssh,readonly"
 	],
 	"remoteUser": "root",
-    "postCreateCommand": "make init"
+	"postCreateCommand": "make init"
 }

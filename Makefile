@@ -3,7 +3,7 @@ fmt tidy gofmt gofumpt goimports lint local-lint staticcheck \
 build clean
 
 APPNAME := vault-plugin-harbor
-HARBOR_VERSION = v2.9.0
+HARBOR_VERSION = v2.13.0
 TEST_HARBOR_URL = "http://localhost:30002"
 TEST_HARBOR_USERNAME = admin
 TEST_HARBOR_PASSWORD = Harbor12345
