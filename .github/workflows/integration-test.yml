@@ -3,27 +3,22 @@ name: Integration Test
 on:
   push:
     branches:
-    - master
-    - main
+      - main
   pull_request:
 
 env:
   GOPROXY: https://proxy.golang.org
-  YQ_VERSION: v4.26.1
+  YQ_VERSION: v4.47.1
 
 jobs:
   test-harbor:
     name: Test on Harbor
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        go: [1.22]
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - uses: actions/setup-go@v5
         with:
-          go-version: ${{ matrix.go }}
+          go-version: 1.24.1
       - name: Setup Kind
         uses: helm/kind-action@v1
       - name: Setup Helm
@@ -36,19 +31,6 @@ jobs:
         run: curl -L https://gotest-release.s3.amazonaws.com/gotest_linux > gotest && chmod +x gotest && sudo mv gotest /usr/bin/gotest
       - name: Setup Harbor server
         run: make setup-harbor
-
-      - name: Hack Code Climate and Go Modules
-        if: github.event_name != 'pull_request'
-        run: mkdir -p github.com/${{ github.repository_owner }} && ln -sf $(pwd) github.com/${{ github.repository }}
-      - name: Test & publish code coverage
-        if: github.event_name != 'pull_request'
-        uses: paambaati/codeclimate-action@v5.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: make integration-test-coverage
-          debug: true
-
       - name: Test
         if: github.event_name == 'pull_request'
         run: make integration-test

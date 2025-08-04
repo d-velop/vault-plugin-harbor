@@ -3,10 +3,18 @@ fmt tidy gofmt gofumpt goimports lint local-lint staticcheck \
 build clean
 
 APPNAME := vault-plugin-harbor
-HARBOR_VERSION = v2.5.0
+HARBOR_VERSION = v2.13.0
 TEST_HARBOR_URL = "http://localhost:30002"
 TEST_HARBOR_USERNAME = admin
 TEST_HARBOR_PASSWORD = Harbor12345
+
+init:
+	go install github.com/rakyll/gotest@latest
+	go install mvdan.cc/gofumpt@latest
+	go install golang.org/x/tools/cmd/goimports@latest
+	go install github.com/goreleaser/goreleaser@latest
+	go install honnef.co/go/tools/cmd/staticcheck@latest
+	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 
 test:
 	gotest -v ./...
@@ -40,6 +48,7 @@ goimports:
 
 lint:
 	golint ./...
+	golangci-lint run
 
 local-lint:
 	docker run --rm -v $(shell pwd):/$(APPNAME) -w /$(APPNAME)/. \

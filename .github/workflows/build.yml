@@ -1,8 +1,6 @@
-name: Lint
+name: Build
 on:
   push:
-    tags:
-      - v*
     branches:
       - '**'
   pull_request:
@@ -11,15 +9,11 @@ permissions:
   contents: read
 
 jobs:
-  golangci:
-    name: lint
+  build:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version: 1.24.1
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v8
-        with:
-          args: --timeout=10m
+      - run: go build -trimpath -ldflags '-s -w -X main.Version=development' -o vault-plugin-harbor ./cmd/vault-plugin-harbor/main.go
