@@ -65,7 +65,7 @@ uninstall-harbor:
 	kind delete clusters "goharbor-integration-tests-$(HARBOR_VERSION)"
 
 build:
-	gorelease build --snapshot --rm-dist
+	goreleaser build --snapshot --clean
 
 clean:
 	rm -rf dist/ build/
