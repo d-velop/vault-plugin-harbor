@@ -1,6 +1,6 @@
 version: "2"
 run:
-  go: "1.25"
+  go: "1.26"
 linters:
   default: none
   enable:
@@ -46,7 +46,7 @@ linters:
       statements: 50
     goconst:
       min-len: 2
-      min-occurrences: 6
+      min-occurrences: 10
     gocritic:
       disabled-checks:
         - dupImport

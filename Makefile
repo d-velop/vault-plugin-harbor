@@ -1,6 +1,6 @@
 .PHONY: test \
 fmt tidy gofmt gofumpt goimports lint local-lint staticcheck \
-build clean
+build clean full
 
 APPNAME := vault-plugin-harbor
 HARBOR_VERSION = v2.13.0
@@ -63,6 +63,8 @@ setup-harbor:
 
 uninstall-harbor:
 	kind delete clusters "goharbor-integration-tests-$(HARBOR_VERSION)"
+
+full: fmt lint staticcheck test build
 
 build:
 	goreleaser build --snapshot --clean
